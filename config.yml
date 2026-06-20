@@ -1,0 +1,14 @@
+dataset:
+  sprints_file: "data/Spring XD Sprints.csv"
+  issues_file: "data/Spring XD Issues.csv"
+
+columns:
+  sprint_id: "sprintId"
+  sprint_name: "sprintName"
+  sprint_start_date: "sprintStartDate"
+  sprint_complete_date: "sprintCompleteDate"
+  completed_points: "completedIssuesEstimateSum"
+  issue_sprint: "sprint"
+  issue_status: "status"
+  status_done_value: "Done"
+  date_format: "%d-%b-%y"
