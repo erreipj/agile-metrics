@@ -15,6 +15,7 @@ columns:
   completed_issues_count: "completedIssuesCount"
   total_issues_count: "totalNumberOfIssues"
   issues_not_completed: "issuesNotCompletedInCurrentSprint"
+  sprint_length: "SprintLength"
     # Individual ticket dates — leave empty if not available in dataset
   ticket_created_date: ""
   ticket_resolved_date: ""
