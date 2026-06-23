@@ -12,6 +12,8 @@ columns:
   issue_status: "status"
   status_done_value: "Done"
   date_format: "%d-%b-%y"
+  completed_issues_count: "completedIssuesCount"
+  total_issues_count: "totalNumberOfIssues"
     # Individual ticket dates — leave empty if not available in dataset
   ticket_created_date: ""
   ticket_resolved_date: ""
