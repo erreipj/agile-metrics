@@ -110,6 +110,7 @@ agile-metrics/
 - [x] Monte Carlo Forecasting
 - [ ] Dockerization
 - [ ] Unit testing
+- [ ] Jira API integration
 
 ---
 
