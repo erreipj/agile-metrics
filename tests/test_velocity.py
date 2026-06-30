@@ -1,17 +1,7 @@
 import pandas as pd
 import pytest
 from src.velocity import calculate_velocity, calculate_average_velocity
-
-
-def make_sprint_df():
-    """
-    Crée un DataFrame de test avec des données connues.
-    """
-    return pd.DataFrame({
-        'sprintId': [1, 2, 3],
-        'sprintName': ['Sprint 1', 'Sprint 2', 'Sprint 3'],
-        'completedIssuesEstimateSum': [10.0, 20.0, 30.0]
-    })
+from tests.fixtures import make_sprint_df
 
 
 COLS = {
