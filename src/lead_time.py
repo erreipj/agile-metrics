@@ -2,19 +2,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import yaml
 
-# Chargement de la configuration
-with open('config.yml', 'r') as f:
-    config = yaml.safe_load(f)
-
-# Raccourcis pour la lisibilité
-cols = config['columns']
-dataset = config['dataset']
-
-# Chargement des données
-df_sprints = pd.read_csv(dataset['sprints_file'])
-df_issues = pd.read_csv(dataset['issues_file'])
-
-
+def load_config(config_path='config.yml'):
+    with open(config_path, 'r') as f:
+        return yaml.safe_load(f)
+    
+    
 def calculate_lead_time_exact(df_issues, cols):
     """
     Calcul exact du Lead Time par ticket.
@@ -69,32 +61,46 @@ def calculate_lead_time_approximate(df_issues, df_sprints, cols):
     return lead_time_by_sprint
 
 
-# Sélection du mode de calcul selon la config
-if cols.get('ticket_created_date') and cols.get('ticket_resolved_date'):
-    print("Mode : calcul exact (dates individuelles disponibles)")
-    lead_time_by_sprint = calculate_lead_time_exact(df_issues, cols)
-else:
-    print("Mode : calcul approximatif (durée du sprint)")
-    lead_time_by_sprint = calculate_lead_time_approximate(df_issues, df_sprints, cols)
+def calculate_average_lead_time(lead_time_by_sprint):
+    avg_lead_time = lead_time_by_sprint['lead_time'].mean()
+    return avg_lead_time
 
-# Moyenne globale
-avg_lead_time = lead_time_by_sprint['lead_time'].mean()
 
-print("=== LEAD TIME MOYEN PAR SPRINT ===")
-print(lead_time_by_sprint)
-print(f"\nLead Time moyen global : {avg_lead_time:.1f} jours")
+def vizualization_lead_time(lead_time_by_sprint, avg_lead_time, cols):
+    fig, ax = plt.subplots(figsize=(12, 6))
+    ax.bar(lead_time_by_sprint[cols['sprint_name']], lead_time_by_sprint['lead_time'], color='seagreen')
+    ax.axhline(y=avg_lead_time, color='red', linestyle='--', label=f'Moyenne : {avg_lead_time:.1f} jours')
+    ax.set_title('Lead Time moyen par sprint', fontsize=14)
+    ax.set_xlabel('Sprint')
+    ax.set_ylabel('Durée (jours)')
+    ax.legend()
+    plt.xticks(rotation=45, ha='right')
+    plt.tight_layout()
+    plt.savefig('charts/lead_time.png')
+    plt.show()
 
-# Visualisation
-fig, ax = plt.subplots(figsize=(12, 6))
-ax.bar(lead_time_by_sprint[cols['sprint_name']], lead_time_by_sprint['lead_time'], color='seagreen')
-ax.axhline(y=avg_lead_time, color='red', linestyle='--', label=f'Moyenne : {avg_lead_time:.1f} jours')
-ax.set_title('Lead Time moyen par sprint', fontsize=14)
-ax.set_xlabel('Sprint')
-ax.set_ylabel('Durée (jours)')
-ax.legend()
-plt.xticks(rotation=45, ha='right')
-plt.tight_layout()
-plt.savefig('charts/lead_time.png')
-plt.show()
 
-print("\nGraphique sauvegardé dans charts/lead_time.png")
+if __name__ == "__main__":
+    config = load_config()
+    cols = config['columns']
+    dataset = config['dataset']
+
+    df_sprints = pd.read_csv(dataset['sprints_file'])
+    df_issues = pd.read_csv(dataset['issues_file'])
+
+    # Sélection du mode de calcul selon la config
+    if cols.get('ticket_created_date') and cols.get('ticket_resolved_date'):
+        print("Mode : calcul exact (dates individuelles disponibles)")
+        lead_time_by_sprint = calculate_lead_time_exact(df_issues, cols)
+    else:
+        print("Mode : calcul approximatif (durée du sprint)")
+        lead_time_by_sprint = calculate_lead_time_approximate(df_issues, df_sprints, cols)
+
+    avg_lead_time = calculate_average_lead_time(lead_time_by_sprint)
+    
+    print("=== LEAD TIME MOYEN PAR SPRINT ===")
+    print(lead_time_by_sprint)
+    print(f"\nLead Time moyen global : {avg_lead_time:.1f} jours")
+
+    vizualization_lead_time(lead_time_by_sprint, avg_lead_time, cols)
+    print("\nGraphique sauvegardé dans charts/lead_time.png")
