@@ -13,5 +13,7 @@ def make_sprint_df():
         'ticketResolvedDate': pd.to_datetime(['2026-06-28', '2026-07-12', '2026-07-27']),
         'issueStatus': ['Done', 'Done', 'Done'],
         'issueSprint': ['1', '2', '3'],
-        'completedIssuesEstimateSum': [10.0, 20.0, 30.0]
+        'completedIssuesEstimateSum': [10.0, 20.0, 30.0],
+        'completedIssuesCount': [8.0, 9.0, 9.0],
+        'totalNumberOfIssues': [10.0, 12.0, 10.0]
     })
